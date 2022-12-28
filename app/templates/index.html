@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,15 +6,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>home</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/js/token.js' %}"></script>
 </head>
 <body>
 	<div style="display:flex;width:400px;justify-content:space-around" class="thumbs-container" >
-		<button style="cursor:pointer" id="thumbs-up" onclick="thumbs_up()" >
+		<button style="cursor:pointer" id="thumbs-up"  >
 			<i style="font-size:100px;" class="fa fa-thumbs-o-up"></i>
 
 			
 		</button>
-		<button style="cursor:pointer" id="thumbs-down" onclick="thumbs_down()" >
+		<button style="cursor:pointer" id="thumbs-down" >
 			<i style="font-size:100px;" class="fa fa-thumbs-o-down"></i>
 			
 		</button>
@@ -21,27 +24,58 @@
 	<div style="display:flex;gap:20px;width:150px;margin:20px" class="counter-container">
 		<div>
 			<i class="fa fa-thumbs-up"></i>
-			<span id="like-counter" >0</span>
+			<span id="like-counter" >{{likes}}</span>
 		</div>
 		<div>
 			<i class="fa fa-thumbs-down"></i>
-			<span id="dislike-counter" >0</span>
+			<span id="dislike-counter" >{{dislikes}}</span>
 		</div>
 	</div>
 	
 
 </body>
-<script type="text/javascript">
+<script>
+	$("#thumbs-up").click(function(){
 
-	let like_counter = document.getElementById("like-counter");
-	let dislike_counter = document.getElementById("dislike-counter");
-	function thumbs_up(){
-		like_counter.innerText = parseInt(like_counter.innerText) + 1;
-	}
+		$.ajax({
+		type: "PUT",
+		url: "{% url 'home' %}",
+		headers: {
+            "X-CSRFToken": getCookie("csrftoken")
+		},
+		data: {
+		'likes':$("#like-counter").text(),
+		'hello':'no',
+		},
+		enctype: 'multipart/form-data',
+		success: function(data){
+			$("#like-counter").text(data.likes)
+		},
+		fail: function(err){
+			console.log("failed",err)
+		}
+		});
+	})
+	$("#thumbs-down").click(function(){
+		$.ajax({
+		type: "PUT",
+		url: "{% url 'home' %}",
+		headers: {
+            "X-CSRFToken": getCookie("csrftoken")
+		},
+		data: {
+		'dislikes':$("#dislike-counter").text(),
+		},
+		enctype: 'multipart/form-data',
+		success: function(data){
+			$("#dislike-counter").text(data.dislikes)
+		},
+		error: function(err){
+			console.log("failed",err)
+		}
+		});
+	})
 
-	function thumbs_down(){
-		dislike_counter.innerText = parseInt(dislike_counter.innerText) + 1;
-
-	}
+	
 </script>
 </html>

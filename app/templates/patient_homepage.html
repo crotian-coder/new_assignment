@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width:300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+.address{
+	color: grey;
+  font-size: 15px;
+}
+
+
+</style>
+</head>
+<body>
+	<h1 style="text-align:center">Profile </h1>
+	<a href="{% url 'logout' %}" ><button id="logout" style="position:absolute;right:10px;top:20px;width:100px;height:50px;font-weight:bold;color:white;font-family:cursive;cursor:pointer;border-radius:5px;border:none;background:indianred;" >
+		logout
+	</button></a>
+	<div class="card" style="padding:0 2px">
+  <img src="{{ patient.profile_pic.url }}" alt="John" style="width:100%">
+  <h2>{{doctor.user.first_name}} {{doctor.user.last_name}}</h2>
+  <p class="title">@{{doctor.username}}</p>
+  <p>{{doctor.user.username}}</p>
+  <div style="font-weight:bold;" >Address</div>
+
+  {% if doctor.address.line1 %}
+  <div style="margin:5px 0;display:flex;width:100%;justify-content:space-between;" >
+	  <div style="margin-left:10px" >line1</div>
+	  <div style="margin-right:10px" class="address">{{patient.address.line1}}</div>
+  </div>
+  {% endif %}
+  {% if doctor.address.city %}
+  <div style="margin:5px 0;display:flex;width:100%;justify-content:space-between;" >
+	  <div style="margin-left:10px" >city</div>
+	  <div style="margin-right:10px" class="address">{{patient.address.city}}</div>
+  </div>
+  {% endif %}
+  {% if doctor.address.state %}
+  <div style="margin:5px 0;display:flex;width:100%;justify-content:space-between;" >
+	  <div style="margin-left:10px" >state</div>
+	  <div style="margin-right:10px" class="address">{{patient.address.state}}</div>
+  </div>
+  {% endif %}
+  {% if doctor.address.pincode %}
+  <div style="margin:5px 0;display:flex;width:100%;justify-content:space-between" >
+	  <div style="margin-left:10px" >pincode</div>
+	  <div style="margin-right:10px" class="address">{{patient.address.pincode}}</div>
+  </div>
+  {% endif %}
+
+
+
+
+</div>
+
+</body>
+<script type="text/javascript">
+	console.log("{{patient.profile_pic.url}}")
+</script>
+</html>
